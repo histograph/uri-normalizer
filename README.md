@@ -24,7 +24,7 @@ Then:
 ```js
 var normalizer = require('histograph-uri-normalizer');
 
-var urn = normalizer('http://sws.geonames.org/2758064/');
+var urn = normalizer.URLtoURN('http://sws.geonames.org/2758064/');
 
 // urn == 'urn:geonames:2758064'
 ```
