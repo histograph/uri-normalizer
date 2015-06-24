@@ -1,0 +1,42 @@
+{
+  "name": "histograph-uri-normalizer",
+  "version": "0.0.1",
+  "description": "Histograph URI Normalizer",
+  "main": "./index.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "mocha": "^2.2.1",
+    "jscs": "^1.10.0",
+    "jshint": "^2.6.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "jshint *.js && jscs *.js && node_modules/.bin/mocha test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/histograph/uri-normalizer.git"
+  },
+  "author": "Bert Spaan <bert@waag.org>",
+  "contributors": [
+    {
+      "name": "Bert Spaan",
+      "email": "bert@waag.org"
+    }
+  ],
+  "license": "GPLv3",
+  "jshintConfig": {
+    "node": true,
+    "globalstrict": false,
+    "undef": true,
+    "unused": true,
+    "noarg": true
+  },
+  "jscsConfig": {
+    "preset": "airbnb",
+    "requireCamelCaseOrUpperCaseIdentifiers": null,
+    "disallowMultipleVarDecl": true,
+    "requireMultipleVarDecl": null
+  }
+}
