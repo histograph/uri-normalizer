@@ -3,12 +3,11 @@
   "version": "0.0.1",
   "description": "Histograph URI Normalizer",
   "main": "./index.js",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "mocha": "^2.2.1",
-    "jscs": "^1.10.0",
-    "jshint": "^2.6.0"
+    "jscs": "^1.13.1",
+    "jshint": "^2.8.0",
+    "mocha": "^2.2.5"
   },
   "scripts": {
     "start": "node index.js",

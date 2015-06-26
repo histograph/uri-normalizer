@@ -6,25 +6,25 @@ describe('uri-normalizer', function() {
     it('Should return proper URNs', function() {
 
       // GeoNames
-      assert.equal(uriNormalizer.URLtoURN('http://sws.geonames.org/2758064/about.rdf', 'geonames'), 'urn:geonames:2758064');
-      assert.equal(uriNormalizer.URLtoURN('http://sws.geonames.org/2758064/', 'geonames'), 'urn:geonames:2758064');
-      assert.equal(uriNormalizer.URLtoURN('http://sws.geonames.org/2758064', 'geonames'), 'urn:geonames:2758064');
+      assert.equal(uriNormalizer.URLtoURN('http://sws.geonames.org/2758064/about.rdf', 'geonames'), 'urn:hg:geonames:2758064');
+      assert.equal(uriNormalizer.URLtoURN('http://sws.geonames.org/2758064/', 'geonames'), 'urn:hg:geonames:2758064');
+      assert.equal(uriNormalizer.URLtoURN('http://sws.geonames.org/2758064', 'geonames'), 'urn:hg:geonames:2758064');
 
       // TGN
-      assert.equal(uriNormalizer.URLtoURN('http://vocab.getty.edu/tgn/7006952', 'tgn'), 'urn:tgn:7006952');
-      assert.equal(uriNormalizer.URLtoURN('http://vocab.getty.edu/tgn/term/352466', 'tgn'), 'urn:tgn:term:352466');
+      assert.equal(uriNormalizer.URLtoURN('http://vocab.getty.edu/tgn/7006952', 'tgn'), 'urn:hg:tgn:7006952');
+      assert.equal(uriNormalizer.URLtoURN('http://vocab.getty.edu/tgn/term/352466', 'tgn'), 'urn:hg:tgn:term:352466');
     });
 
     it('Should return proper URNs (without specifying namespace)', function() {
 
       // GeoNames
-      assert.equal(uriNormalizer.URLtoURN('http://sws.geonames.org/2758064/about.rdf'), 'urn:geonames:2758064');
-      assert.equal(uriNormalizer.URLtoURN('http://sws.geonames.org/2758064/'), 'urn:geonames:2758064');
-      assert.equal(uriNormalizer.URLtoURN('http://sws.geonames.org/2758064'), 'urn:geonames:2758064');
+      assert.equal(uriNormalizer.URLtoURN('http://sws.geonames.org/2758064/about.rdf'), 'urn:hg:geonames:2758064');
+      assert.equal(uriNormalizer.URLtoURN('http://sws.geonames.org/2758064/'), 'urn:hg:geonames:2758064');
+      assert.equal(uriNormalizer.URLtoURN('http://sws.geonames.org/2758064'), 'urn:hg:geonames:2758064');
 
       // TGN
-      assert.equal(uriNormalizer.URLtoURN('http://vocab.getty.edu/tgn/7006952'), 'urn:tgn:7006952');
-      assert.equal(uriNormalizer.URLtoURN('http://vocab.getty.edu/tgn/term/352466'), 'urn:tgn:term:352466');
+      assert.equal(uriNormalizer.URLtoURN('http://vocab.getty.edu/tgn/7006952'), 'urn:hg:tgn:7006952');
+      assert.equal(uriNormalizer.URLtoURN('http://vocab.getty.edu/tgn/term/352466'), 'urn:hg:tgn:term:352466');
     });
   });
 
@@ -32,11 +32,11 @@ describe('uri-normalizer', function() {
     it('Should return proper URLs', function() {
 
       // GeoNames
-      assert.equal(uriNormalizer.URNtoURL('urn:geonames:2758064'), 'http://sws.geonames.org/2758064/');
+      assert.equal(uriNormalizer.URNtoURL('urn:hg:geonames:2758064'), 'http://sws.geonames.org/2758064/');
 
       // TGN
-      assert.equal(uriNormalizer.URNtoURL('urn:tgn:7006952'), 'http://vocab.getty.edu/tgn/7006952');
-      assert.equal(uriNormalizer.URNtoURL('urn:tgn:term:352466'), 'http://vocab.getty.edu/tgn/term/352466');
+      assert.equal(uriNormalizer.URNtoURL('urn:hg:tgn:7006952'), 'http://vocab.getty.edu/tgn/7006952');
+      assert.equal(uriNormalizer.URNtoURL('urn:hg:tgn:term:352466'), 'http://vocab.getty.edu/tgn/term/352466');
     });
   });
 

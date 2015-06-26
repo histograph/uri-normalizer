@@ -67,10 +67,11 @@ exports.URLtoURN = function(url, nid) {
 exports.URNtoURL = function(urn) {
   var parts = urn.split(':');
   if (parts[0] === 'urn') {
-    var nid = parts[1];
-    var nss = parts.splice(2).join(':');
+    var hg = parts[1];
+    var nid = parts[2];
+    var nss = parts.splice(3).join(':');
 
-    if (nid !== undefined && namespaces[nid]) {
+    if (hg === 'hg' && nid !== undefined && namespaces[nid]) {
       var namespace = namespaces[nid];
       return namespace.URNtoURL(nid, nss);
     } else {
