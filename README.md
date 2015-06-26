@@ -45,6 +45,19 @@ See also:
 - https://www.ietf.org/rfc/rfc1737.txt
 - https://en.wikipedia.org/wiki/Uniform_resource_name
 
+Identifier strings are matched according to the following regular expressions
+
+```js
+// matching strings look like an URI to use, based on RFC2141
+var SCHEME = /^[a-zA-Z][a-zA-Z0-9+-\.]*:$
+
+// match `foo/123` HGID's
+var HGID = /^[a-zA-Z0-9\.+-_]+\/[a-zA-Z0-9\.+-_]+$/
+
+// alleß Andere
+var ID = /^[a-zA-Z0-9\.+-_]+$/
+```
+
 ## Usage
 
 First:
