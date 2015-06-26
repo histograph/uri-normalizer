@@ -3,8 +3,7 @@ var uriNormalizer = require('../index');
 
 describe('uri-normalizer', function() {
    describe('normalize', function() {
-     it('Should return proper URNs without specifying namespace', function() {
-
+     it('Should normalize strings to URNs when specifying a URL-link string', function() {
        // GeoNames
        assert.equal(uriNormalizer.normalize('http://sWS.geonames.org/2758064/about.rdf'), 'urn:hg:geonames:2758064');
        assert.equal(uriNormalizer.normalize('http://sws.geonames.org/2758064/'), 'urn:hg:geonames:2758064');
@@ -13,12 +12,20 @@ describe('uri-normalizer', function() {
        // TGN
        assert.equal(uriNormalizer.normalize('http://vocab.getty.edu/tgn/7006952'), 'urn:hg:tgn:7006952');
        assert.equal(uriNormalizer.normalize('http://vocab.getty.edu/tgn/term/352466'), 'urn:hg:tgn:term:352466');
+     });
 
+     it('Should return urn:hgid URNs for unknown namepspaces', function() {
        // HGIDs
        assert.equal(uriNormalizer.normalize('7006952', 'foo'), 'urn:hgid:foo/7006952');
        assert.equal(uriNormalizer.normalize('term/352466', 'baz'), 'urn:hgid:term/352466');
        assert.equal(uriNormalizer.normalize('7006952', 'fOo'), 'urn:hgid:foo/7006952');
        assert.equal(uriNormalizer.normalize('flEp.tozz/352.466', 'hrmz'), 'urn:hgid:flep/352.466');
+     });
+	  
+     it('Should return urn:hg:foo URNs for known namepspaces', function() {
+       // HGIDs
+       assert.equal(uriNormalizer.normalize('tgn/7006952', 'foo'), 'urn:hg:tgn:7006952');
+       assert.equal(uriNormalizer.normalize('352466', 'tgn'), 'urn:hg:tgn:352466');
      });
    });
 

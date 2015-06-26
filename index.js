@@ -38,7 +38,7 @@ exports.normalize = function(s, nid) {
   }
 
   // it is (or, should be) a HGID
-  return 'urn:hgid:' + exports.normalizeHGID(s, nid);
+  return exports.normalizeHGID(s, nid);
 };
 
 // normalize dataset names; `KOEKwous.floes.tozz` ~> `koekwous`
@@ -46,23 +46,35 @@ exports.normalizeSourceID = function(sourceid) {
   return sourceid.split('.')[0].toLowerCase();
 };
 
+exports.parseHGID = function(s, sourceId){
+	
+	// the case `a/x`
+	var ax = HGID.exec(s);
+	if (ax) 
+		return [ax[1], ax[2]];
+	
+	// the case `x`
+	var x = ID.exec(s);
+	if (x)
+		return [sourceId, x[1]];
+
+	// undefined otherwise
+}
+
 // normalize HG identifiers; `fOE.bar/234` ~> `foo/123`
 exports.normalizeHGID = function(hgid_string, sourceId) {
-  // split `a/b` into a and b
-  var m1 = HGID.exec(hgid_string);
-  if (m1) {
-    var dataset = exports.normalizeSourceID(m1[1]);
-    var id1 = m1[2];
-    return u.format('%s/%s', dataset, id1);
-  }
+	// split `a/b` into a and b
+	var hgid = exports.parseHGID(hgid_string, sourceId);
 
-  var m2 = ID.exec(hgid_string);
-  if (m2) {
-    var id2 = m2[1];
-    return u.format('%s/%s', exports.normalizeSourceID(sourceId), id2);
-  }
+	// turn 'foo.bar.baz' into foo
+	hgid[0] = exports.normalizeSourceID(hgid[0]);
 
-  throw new Error('Invalid identifier "' + hgid_string + '", must be URI or HGID /^[a-zA-Z0-9\.+-_]+$/');
+	// namespace 'foo' is known in `urn:hg` namespace
+	if(namespaces[hgid[0]])
+		return u.format('urn:hg:%s:%s', hgid[0], hgid[1]);
+
+	// HGID namespace
+	return u.format('urn:hgid:%s/%s', hgid[0], hgid[1]);
 };
 
 exports.URLtoURN = function(url, nid) {
