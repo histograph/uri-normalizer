@@ -17,6 +17,8 @@ describe('uri-normalizer', function() {
        // HGIDs
        assert.equal(uriNormalizer.normalize('7006952', 'foo'), 'urn:hgid:foo/7006952');
        assert.equal(uriNormalizer.normalize('term/352466', 'baz'), 'urn:hgid:term/352466');
+       assert.equal(uriNormalizer.normalize('7006952', 'fOo'), 'urn:hgid:foo/7006952');
+       assert.equal(uriNormalizer.normalize('flEp.tozz/352.466', 'hrmz'), 'urn:hgid:flep/352.466');
      });
    });
 
