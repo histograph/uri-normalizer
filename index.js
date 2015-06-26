@@ -61,7 +61,7 @@ exports.parseHGID = function(s, sourceId){
 	// undefined otherwise
 }
 
-// normalize HG identifiers; `fOE.bar/234` ~> `foo/123`
+// normalize HG identifiers; `fOE.bar/234` ~> `urn:hgid:foo/123`
 exports.normalizeHGID = function(hgid_string, sourceId) {
 	// split `a/b` into a and b
 	var hgid = exports.parseHGID(hgid_string, sourceId);
