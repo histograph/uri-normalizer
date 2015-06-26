@@ -15,8 +15,8 @@ describe('uri-normalizer', function() {
        assert.equal(uriNormalizer.normalize('http://vocab.getty.edu/tgn/term/352466'), 'urn:hg:tgn:term:352466');
 
        // HGIDs
-       assert.equal(uriNormalizer.normalize('7006952', 'foo'), 'urn:hgid:foo:7006952');
-       assert.equal(uriNormalizer.normalize('term/352466', 'baz'), 'urn:hgid:term:352466');
+       assert.equal(uriNormalizer.normalize('7006952', 'foo'), 'urn:hgid:foo/7006952');
+       assert.equal(uriNormalizer.normalize('term/352466', 'baz'), 'urn:hgid:term/352466');
      });
    });
 

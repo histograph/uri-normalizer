@@ -16,7 +16,7 @@ var namespaces = require('./namespaces');
 */
 
 // match if this string looks like a URI
-var SCHEME = /^[a-zA-Z][a-zA-Z0-9+-\.]*:$/;
+var SCHEME = /^[a-zA-Z][a-zA-Z0-9+-\.]*:.*$/;
 
 // match `a/b` HG identifiers
 var HGID = /^[a-zA-Z0-9\.+-_]+\/[a-zA-Z0-9\.+-_]+$/;
@@ -51,7 +51,7 @@ exports.URLtoURN = function(url, nid) {
   } else {
     for (var n in namespaces) {
       var urlMatch = function(url, baseUrl) {
-        return url.indexOf(baseUrl) === 0;
+        return url.toLowerCase().indexOf(baseUrl) === 0;
       };
 
       var urlMatched = namespaces[n].urlMatch ? namespaces[n].urlMatch(url) : urlMatch(url, namespaces[n].baseUrl);
@@ -73,7 +73,7 @@ exports.URNtoURL = function(urn) {
 
     if (hg === 'hg' && nid !== undefined && namespaces[nid]) {
       var namespace = namespaces[nid];
-      return namespace.URNtoURL(nid, nss);
+      return namespace.URNtoURL(nid, nss.toLowerCase());
     } else {
       throw new Error('No namespace found for URN: ' + urn);
     }

@@ -21,7 +21,7 @@ module.exports = {
     baseUrl: 'http://vocab.getty.edu/tgn/',
 
     URLtoURN: function(url) {
-      var match = /.*?(term)?\/?(\d+).*/.exec(url);
+      var match = /.*?(term)?\/?(\d+).*/i.exec(url);
       var nss = [match[1], match[2]].filter(function(part) { return part; }).join(':');
       return prefix('tgn') + nss;
     },
