@@ -1,15 +1,47 @@
 # Histograph URI Normalizer
 
-Normalizes URLs to URNs, and resolves URNs to URLs. Used by [Histograph](http://histograph.io)'s [Graphmalizer](https://github.com/graphmalizer) instance.
+Used by [Histograph](http://histograph.io) to define one set of identifiers to be used by [Graphmalizer](https://github.com/graphmalizer).
 
-Histograph/Graphmalizer accepts PITs/nodes with either a `id` or an `uri` field (but not both). It's easy to construct an URN from `id`, but Histograph/Graphmalizer needs an URI Normalizer to convert HTTP URIs to URNs for internal use.
+Graphmalizer is stupid (by design): when two identifiers are lexicographically equal (equal as character strings)
+they are considered to refer to the same thing.
 
-Histograph URI Normalizer converts `http://vocab.getty.edu/tgn/7006952` to `urn:tgn:7006952`, and `urn:geonames:2758064` to `http://sws.geonames.org/2758064/`.
+Histograph is more flexible when it comes to specifying identifiers:
+
+- Identifiers can be URIs (`http://vocab.getty.edu/tgn/7006952`, `urn:ietf:rfc:2141`)
+- Or HGID's (Histograph id's) (`123`, `foo/234`).
+- Histograph accepts PITs/nodes with either an `id` or an `uri` field (but not both).
+- Histograph relations have a `from` and `to` field which can be an URI or HGID.
+
+This project matches any histograph identifier string and normalizes it into a URI.
+
+## Summary
+
+Known URLs are converted into canonical form URNs with NID `hg`
+
+	http://vocab.getty.edu/tgn/7006952 ~> urn:hg:tgn:7006952
+	http://sws.geonames.org/2758064/   ~> urn:hg:geonames:2758064
+
+URNs are left untouched (if canonical form is known, convert to that):
+
+	urn:hg:geonames:2758064            ~> urn:hg:geonames:2758064
+	urn:ietf:rfc:2141                  ~> urn:ietf:rfc:2141
+
+HGIDs within a dataset `foo` are expandend to URNs with NID `hgid`
+
+	12345-nl                           ~> urn:hgid:foo:12345-nl
+	bar/45678901                       ~> urn:hgid:bar:45678901
+
+Reverse (resolving)
+
+	urn:hg:geonames:2758064            ~> http://sws.geonames.org/2758064/
+
+Etc.
 
 [`namespaces.js`](namespaces.js) contains a set of default namespaces.
 
 See also:
 
+- https://www.ietf.org/rfc/rfc2141.txt
 - https://www.ietf.org/rfc/rfc1737.txt
 - https://en.wikipedia.org/wiki/Uniform_resource_name
 
@@ -19,16 +51,40 @@ First:
 
     npm install histograph/uri-normalizer
 
-Then:
+Just do the right thing:
+
+```js
+var n = require('histograph-uri-normalizer').normalize;
+
+console.log(n('http://sws.geonames.org/2758064/'))
+// => urn:hg:geonames:2758064
+
+// don't need to, but might as well pass dataset identifier
+console.log(n('foo/123', 'bar'))
+// => urn:hgid:foo:123
+
+// need to pass dataset identifier
+console.log(n('123', 'bar'))
+// => urn:hgid:bar:123
+```
+
+Or use the more specific methods:
 
 ```js
 var normalizer = require('histograph-uri-normalizer');
 
 var urn = normalizer.URLtoURN('http://sws.geonames.org/2758064/');
-console.log(urn); // contains 'urn:geonames:2758064'
+console.log(urn); // contains 'urn:hg:geonames:2758064'
 ```
 
 ## API
+
+### `normalizer.normalize(s, nid)`
+
+Tries to detect if you pass an URI, local HGID or global HGID.
+Then does the right thing to normalize it.
+
+It uses all namespaces to convert `s` if it's a URI.
 
 ### `normalizer.URLtoURN(url, [nid])`
 
