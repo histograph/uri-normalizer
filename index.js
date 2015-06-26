@@ -19,11 +19,11 @@ var u = require('util');
 // match if this string looks like a URI
 var SCHEME = /^[a-zA-Z][a-zA-Z0-9+-\.]*:.*$/;
 
-// match `a/b` HG identifiers
-var HGID = /^([a-zA-Z0-9\.+-_]+)\/([a-zA-Z0-9\.+-_]+)$/;
+// match `a/b` HG identifiers (whitespace flexible)
+var HGID = /^\s*([a-zA-Z0-9\.+-_]+)\/([a-zA-Z0-9\.+-_]+)\s*$/;
 
-// match normal identifiers
-var ID = /^([a-zA-Z0-9\.+-_]+)$/;
+// match normal identifiers (whitespace flexible)
+var ID = /^\s*([a-zA-Z0-9\.+-_]+)\s*$/;
 
 exports.normalize = function(s, nid) {
 
