@@ -49,7 +49,7 @@ Identifier strings are matched according to the following regular expressions
 
 ```js
 // matching strings look like an URI to use, based on RFC2141
-var SCHEME = /^[a-zA-Z][a-zA-Z0-9+-\.]*:$
+var SCHEME = /^[a-zA-Z][a-zA-Z0-9+-\.]*:$/
 
 // match `foo/123` HGID's
 var HGID = /^[a-zA-Z0-9\.+-_]+\/[a-zA-Z0-9\.+-_]+$/
