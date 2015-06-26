@@ -2,6 +2,25 @@ var assert = require('assert');
 var uriNormalizer = require('../index');
 
 describe('uri-normalizer', function() {
+   describe('normalize', function() {
+     it('Should return proper URNs without specifying namespace', function() {
+
+       // GeoNames
+       assert.equal(uriNormalizer.normalize('http://sWS.geonames.org/2758064/about.rdf'), 'urn:hg:geonames:2758064');
+       assert.equal(uriNormalizer.normalize('http://sws.geonames.org/2758064/'), 'urn:hg:geonames:2758064');
+       assert.equal(uriNormalizer.normalize('hTTp://sws.geonAmEs.org/2758064'), 'urn:hg:geonames:2758064');
+
+       // TGN
+       assert.equal(uriNormalizer.normalize('http://vocab.getty.edu/tgn/7006952'), 'urn:hg:tgn:7006952');
+       assert.equal(uriNormalizer.normalize('http://vocab.getty.edu/tgn/term/352466'), 'urn:hg:tgn:term:352466');
+
+       // HGIDs
+       assert.equal(uriNormalizer.normalize('7006952', 'foo'), 'urn:hgid:foo:7006952');
+       assert.equal(uriNormalizer.normalize('term/352466', 'baz'), 'urn:hgid:term:352466');
+     });
+   });
+
+	
   describe('URLtoURN', function() {
     it('Should return proper URNs', function() {
 
