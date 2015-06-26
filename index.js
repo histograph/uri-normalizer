@@ -28,7 +28,7 @@ exports.normalize = function(s, nid) {
   // normalize URIs
   if (SCHEME.test(s)) {
     try {
-      return exports.URLtoURN(s, nid);
+      return exports.URLtoURN(s);
     }
     catch(e) {
       return s;
