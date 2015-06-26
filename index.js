@@ -26,7 +26,7 @@ var HGID = /^([a-zA-Z0-9\.+-_]+)\/([a-zA-Z0-9\.+-_]+)$/;
 var ID = /^([a-zA-Z0-9\.+-_]+)$/;
 
 exports.normalize = function(s, nid) {
-  
+
   // normalize URIs
   if (SCHEME.test(s)) {
     try {
@@ -42,27 +42,27 @@ exports.normalize = function(s, nid) {
 };
 
 // normalize dataset names; `KOEKwous.floes.tozz` ~> `koekwous`
-exports.normalizeSourceID = function (sourceid){
-	return sourceid.split('.')[0].toLowerCase();
+exports.normalizeSourceID = function(sourceid) {
+  return sourceid.split('.')[0].toLowerCase();
 };
 
 // normalize HG identifiers; `fOE.bar/234` ~> `foo/123`
 exports.normalizeHGID = function(hgid_string, sourceId) {
-	// split `a/b` into a and b
-	var m1 = HGID.exec(hgid_string);
-	if (m1){
-		var dataset = exports.normalizeSourceID(m1[1]);
-		var identifier = m1[2];
-		return u.format('%s/%s', dataset, identifier);
-	}
-	
-	var m2 = ID.exec(hgid_string);
-	if (m2){
-		var identifier = m2[1];
-		return u.format('%s/%s', exports.normalizeSourceID(sourceId), identifier);
-	}
+  // split `a/b` into a and b
+  var m1 = HGID.exec(hgid_string);
+  if (m1) {
+    var dataset = exports.normalizeSourceID(m1[1]);
+    var id1 = m1[2];
+    return u.format('%s/%s', dataset, id1);
+  }
 
-	throw new Error('Invalid identifier "' + hgid_string + '", must be URI or HGID /^[a-zA-Z0-9\.+-_]+$/');
+  var m2 = ID.exec(hgid_string);
+  if (m2) {
+    var id2 = m2[1];
+    return u.format('%s/%s', exports.normalizeSourceID(sourceId), id2);
+  }
+
+  throw new Error('Invalid identifier "' + hgid_string + '", must be URI or HGID /^[a-zA-Z0-9\.+-_]+$/');
 };
 
 exports.URLtoURN = function(url, nid) {
