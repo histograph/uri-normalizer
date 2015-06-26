@@ -1,7 +1,7 @@
 var u = require('util');
 
 function prefix(nid) {
-  return u.format('urn:hg:%s:', nid)
+  return u.format('urn:hg:%s:', nid);
 }
 
 module.exports = {
