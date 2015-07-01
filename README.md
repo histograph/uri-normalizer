@@ -14,6 +14,51 @@ Histograph is more flexible when it comes to specifying identifiers:
 
 This project matches any histograph identifier string and normalizes it into a URI.
 
+## Uniform Resource Indentifiers
+
+We have:
+
+- Locators: **URL**s  `https://api.histograph.io/foo/123`,
+- Names: **URN**s `urn:foo:123`.
+- Identifiers: **URI**s are either URL's or URN's.
+
+They are documented in
+
+- [RFC 3986, section 3](https://tools.ietf.org/html/rfc3986#section-3) "Uniform Resource Identifier (URI): Generic Syntax"
+- [RFC 2141](https://www.ietf.org/rfc/rfc2141.txt) -- "URN Syntax"
+
+### Lexical Equivalence in URNs
+
+Lexical equivalence means: equal as character strings, just by looking at two, you can decide if they refer to the same thing.
+
+> [RFC 2141](https://www.ietf.org/rfc/rfc2141.txt):
+> For various purposes such as caching, it's often desirable to
+> determine if two URNs are the same without resolving them.
+
+Example: the following URNs are lexically equivalent.
+
+	URN:foo:a123,456
+	urn:foo:a123,456
+	urn:FOO:a123,456
+
+### Functional Equivalence
+
+Again, quoting RFC 2141.
+
+> [RFC 2141](https://www.ietf.org/rfc/rfc2141.txt):
+> Functional equivalence is determined by practice within a given
+> namespace and managed by resolvers for that namespeace. Thus, it is
+> beyond the scope of this document.  Namespace registration must
+> include guidance on how to determine functional equivalence for that
+> namespace, i.e. when two URNs are the identical within a namespace.
+
+Fictional example:
+
+	urn:hgconcept:bag/123,tgn/234,geonames/345
+	urn:hgconcept:geonames/345,bag/456
+
+These might refer to the same concepts. 
+
 ## Summary
 
 Known URLs are converted into canonical form URNs with NID `hg`
