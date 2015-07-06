@@ -46,35 +46,35 @@ exports.normalizeSourceID = function(sourceid) {
   return sourceid.split('.')[0].toLowerCase();
 };
 
-exports.parseHGID = function(s, sourceId){
-	
-	// the case `a/x`
-	var ax = HGID.exec(s);
-	if (ax) 
-		return [ax[1], ax[2]];
-	
-	// the case `x`
-	var x = ID.exec(s);
-	if (x)
-		return [sourceId, x[1]];
+exports.parseHGID = function(s, sourceId) {
 
-	// undefined otherwise
-}
+  // the case `a/x`
+  var ax = HGID.exec(s);
+  if (ax)
+    return [ax[1], ax[2]];
+
+  // the case `x`
+  var x = ID.exec(s);
+  if (x)
+    return [sourceId, x[1]];
+
+  // undefined otherwise
+};
 
 // normalize HG identifiers; `fOE.bar/234` ~> `urn:hgid:foo/123`
 exports.normalizeHGID = function(hgid_string, sourceId) {
-	// split `a/b` into a and b
-	var hgid = exports.parseHGID(hgid_string, sourceId);
+  // split `a/b` into a and b
+  var hgid = exports.parseHGID(hgid_string, sourceId);
 
-	// turn 'foo.bar.baz' into foo
-	hgid[0] = exports.normalizeSourceID(hgid[0]);
+  // turn 'foo.bar.baz' into foo
+  hgid[0] = exports.normalizeSourceID(hgid[0]);
 
-	// namespace 'foo' is known in `urn:hg` namespace
-	if(namespaces[hgid[0]])
-		return u.format('urn:hg:%s:%s', hgid[0], hgid[1]);
+  // namespace 'foo' is known in `urn:hg` namespace
+  if (namespaces[hgid[0]])
+    return u.format('urn:hg:%s:%s', hgid[0], hgid[1]);
 
-	// HGID namespace
-	return u.format('urn:hgid:%s/%s', hgid[0], hgid[1]);
+  // HGID namespace
+  return u.format('urn:hgid:%s/%s', hgid[0], hgid[1]);
 };
 
 exports.URLtoURN = function(url, nid) {
