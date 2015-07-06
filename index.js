@@ -106,7 +106,7 @@ exports.URNtoURL = function(urn) {
 
     if (hg === 'hg' && nid !== undefined && namespaces[nid]) {
       var namespace = namespaces[nid];
-      return namespace.URNtoURL(nid, nss.toLowerCase());
+      return namespace.URNtoURL(nid, nss);
     } else {
       throw new Error('No namespace found for URN: ' + urn);
     }
