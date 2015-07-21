@@ -15,7 +15,7 @@ describe('uri-normalizer', function() {
        assert.equal(uriNormalizer.normalize('http://vocab.getty.edu/tgn/term/352466'), 'urn:hg:tgn:term:352466');
      });
 
-     it('Should return urn:hgid URNs for unknown namepspaces', function() {
+     it('Should return `urn:hgid` URNs for unknown namepspaces', function() {
        // HGIDs
        assert.equal(uriNormalizer.normalize('7006952', 'foo'), 'urn:hgid:foo/7006952');
        assert.equal(uriNormalizer.normalize('term/352466', 'baz'), 'urn:hgid:term/352466');
@@ -23,11 +23,16 @@ describe('uri-normalizer', function() {
        assert.equal(uriNormalizer.normalize('flEp.tozz/352.466', 'hrmz'), 'urn:hgid:flep/352.466');
      });
 
-     it('Should return urn:hg:foo URNs for known namepspaces', function() {
+     it('Should return `urn:hg:foo` URNs for known namepspaces', function() {
        // HGIDs
        assert.equal(uriNormalizer.normalize('tgn/7006952', 'foo'), 'urn:hg:tgn:7006952');
        assert.equal(uriNormalizer.normalize('352466', 'tgn'), 'urn:hg:tgn:352466');
      });
+
+     it('Should return `undefined` when normalizing dataset-internal IDs', function() {
+       assert.equal(uriNormalizer.normalize('7006952'), undefined);
+     });
+
    });
 
 

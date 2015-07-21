@@ -1,38 +1,34 @@
 var namespaces = require('./namespaces');
-var u = require('util');
+var util = require('util');
 
 /*
-
-  URI's that we know about are minimized into URNs
+  - URIs that we know about are minimized into URNs
   http://vocab.getty.com/thing/1234?v=1 ~> 'urn:hg:tgn:v=1,thing=1234'
 
-  URI's that we dont know are left as-is.
+  - URIs that we dont know are left as-is.
 
-  Identifiers in the HG-id tradition `foo/123` are mapped to internal-only URNs
-  foo/123 ~> urn:hgid:foo/123
+  - Histograph identifiers (e.g. `dataset1/123`) are mapped to internal-only URNs
+  dataset1/123 ~> urn:hgid:dataset1/123
 
-  Identifiers without HG scope `123` are mapped to scoped integer-only URNs
-  123 ~> urn:hgid:foo/123
-
+  - Dataset-internal identifiers (without dataset scope, e.g. `123`) are mapped to scoped internal-only URNs
+  123 ~> urn:hgid:dataset1/123 - To do this, a dataset identifier is needed
 */
 
 // match if this string looks like a URI
-var SCHEME = /^[a-zA-Z][a-zA-Z0-9+-\.]*:.*$/;
+var URI_PATTERN = /^[a-zA-Z][a-zA-Z0-9+-\.]*:.*$/;
 
-// match `a/b` HG identifiers (whitespace flexible)
-var HGID = /^\s*([a-zA-Z0-9\.+-_]+)\/([a-zA-Z0-9\.+-_]+)\s*$/;
+// match `a/b` HG identifiers
+var HGID_PATTERN = /^([a-zA-Z0-9\.+-_]+)\/([a-zA-Z0-9\.+-_]+)$/;
 
-// match normal identifiers (whitespace flexible)
-var ID = /^\s*([a-zA-Z0-9\.+-_]+)\s*$/;
+// match normal identifiers
+var ID_PATTERN = /^([a-zA-Z0-9\.+-_]+)$/;
 
 exports.normalize = function(s, nid) {
-
   // normalize URIs
-  if (SCHEME.test(s)) {
+  if (URI_PATTERN.test(s)) {
     try {
       return exports.URLtoURN(s);
-    }
-    catch (e) {
+    } catch (e) {
       return s;
     }
   }
@@ -43,38 +39,48 @@ exports.normalize = function(s, nid) {
 
 // normalize dataset names; `KOEKwous.floes.tozz` ~> `koekwous`
 exports.normalizeSourceID = function(sourceid) {
-  return sourceid.split('.')[0].toLowerCase();
+  if (sourceid) {
+    return sourceid.split('.')[0].toLowerCase();
+  } else {
+    return undefined;
+  }
 };
 
 exports.parseHGID = function(s, sourceId) {
 
   // the case `a/x`
-  var ax = HGID.exec(s);
-  if (ax)
+  var ax = HGID_PATTERN.exec(s);
+  if (ax) {
     return [ax[1], ax[2]];
+  }
 
   // the case `x`
-  var x = ID.exec(s);
-  if (x)
+  var x = ID_PATTERN.exec(s);
+  if (x) {
     return [sourceId, x[1]];
-
-  // undefined otherwise
+  } else {
+    return undefined;
+  }
 };
 
 // normalize HG identifiers; `fOE.bar/234` ~> `urn:hgid:foo/123`
-exports.normalizeHGID = function(hgid_string, sourceId) {
+exports.normalizeHGID = function(hgid, sourceId) {
   // split `a/b` into a and b
-  var hgid = exports.parseHGID(hgid_string, sourceId);
+  var hgidParts = exports.parseHGID(hgid, sourceId);
 
   // turn 'foo.bar.baz' into foo
-  hgid[0] = exports.normalizeSourceID(hgid[0]);
+  hgidParts[0] = exports.normalizeSourceID(hgidParts[0]);
 
-  // namespace 'foo' is known in `urn:hg` namespace
-  if (namespaces[hgid[0]])
-    return u.format('urn:hg:%s:%s', hgid[0], hgid[1]);
+  if (hgidParts[0]) {
+    // namespace 'foo' is known in `urn:hg` namespace
+    if (namespaces[hgidParts[0]])
+      return util.format('urn:hg:%s:%s', hgidParts[0], hgidParts[1]);
 
-  // HGID namespace
-  return u.format('urn:hgid:%s/%s', hgid[0], hgid[1]);
+    // HGID namespace
+    return util.format('urn:hgid:%s/%s', hgidParts[0], hgidParts[1]);
+  } else {
+    return undefined;
+  }
 };
 
 exports.URLtoURN = function(url, nid) {
