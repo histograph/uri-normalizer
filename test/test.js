@@ -31,10 +31,11 @@ describe('uri-normalizer', function() {
 
      it('Should return `undefined` when normalizing dataset-internal IDs', function() {
        assert.equal(uriNormalizer.normalize('7006952'), undefined);
+
+       assert.equal(uriNormalizer.normalize('bus*'), undefined);
      });
 
    });
-
 
   describe('URLtoURN', function() {
     it('Should return proper URNs', function() {

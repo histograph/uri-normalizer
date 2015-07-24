@@ -68,6 +68,11 @@ exports.normalizeHGID = function(hgid, sourceId) {
   // split `a/b` into a and b
   var hgidParts = exports.parseHGID(hgid, sourceId);
 
+  // string doesn't parse as HGID (only alphanum, etc)
+  if (!hgidParts) {
+    return hgidParts;
+  }
+
   // turn 'foo.bar.baz' into foo
   hgidParts[0] = exports.normalizeSourceID(hgidParts[0]);
 
@@ -79,6 +84,7 @@ exports.normalizeHGID = function(hgid, sourceId) {
     // HGID namespace
     return util.format('urn:hgid:%s/%s', hgidParts[0], hgidParts[1]);
   } else {
+    // HGID of the form `x` but no sourceId was given
     return undefined;
   }
 };
