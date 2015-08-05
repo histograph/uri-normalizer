@@ -22,9 +22,13 @@
     {
       "name": "Bert Spaan",
       "email": "bert@waag.org"
+    },
+    {
+      "name": "Jelle Herold",
+      "email": "jelle@waag.org"
     }
   ],
-  "license": "GPLv3",
+  "license": "GPL-3.0",
   "jshintConfig": {
     "node": true,
     "globalstrict": false,
