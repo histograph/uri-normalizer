@@ -178,3 +178,5 @@ normalizer.addNamespace('geonames', newNamespace)
 ### `normalizer.removeNamespace(nid)`
 
 Removes namespace `nid` from namespaces list.
+
+Copyright (C) 2015 [Waag Society](http://waag.org).
