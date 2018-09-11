@@ -23,11 +23,15 @@ var HGID_PATTERN = /^([a-zA-Z0-9\.+-_]+)\/([a-zA-Z0-9\.+-_]+)$/;
 // match normal identifiers
 var ID_PATTERN = /^([a-zA-Z0-9\.+-_]+)$/;
 
+// This function now operates only on id, since we want to keep URI
+// to support Linked Open Data
 exports.normalize = function(s, nid) {
   // normalize URIs
   if (URI_PATTERN.test(s)) {
     try {
-      return exports.URLtoURN(s);
+      // We prefer to use URI because of Linked Open Data
+      //return exports.URLtoURN(s);
+      return s;
     } catch (e) {
       return s;
     }
@@ -94,11 +98,10 @@ exports.URLtoURN = function(url, nid) {
     var namespace = namespaces[nid];
     return namespace.URLtoURN(url);
   } else {
+    var urlMatch = function(url, baseUrl) {
+      return url.toLowerCase().indexOf(baseUrl) === 0;
+    };
     for (var n in namespaces) {
-      var urlMatch = function(url, baseUrl) {
-        return url.toLowerCase().indexOf(baseUrl) === 0;
-      };
-
       var urlMatched = namespaces[n].urlMatch ? namespaces[n].urlMatch(url) : urlMatch(url, namespaces[n].baseUrl);
       if (urlMatched) {
         return namespaces[n].URLtoURN(url);
@@ -140,7 +143,7 @@ exports.addNamespace = function(nid, namespace) {
     if (namespaceValid) {
       namespaces[nid] = namespace;
     } else {
-      throw new Error('Namespace namespace not valid, should include baseUrl, URLtoURN and URNtoURL');
+      throw new Error('Namespace ' + namespace + ' not valid, object should include baseUrl, URLtoURN and URNtoURL');
     }
   } else {
     throw new Error('Namespace already exists: ' + nid);
